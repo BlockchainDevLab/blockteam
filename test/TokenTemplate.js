@@ -11,19 +11,26 @@ describe("TokenTemplate", function () {
 
         const [owner, addr1, addr2] = await ethers.getSigners()
 
-        const TokenTemplate = await ethers.getContractFactory(
-            "TokenTemplate"
-        )
-        const token = await TokenTemplate.deploy()
+        
+        //const TokenTemplate = await ethers.getContractFactory("TokenTemplate")
+        //const token = await TokenTemplate.deploy()
         const nm = "TTESTE"
         const sb = "TK"
         const cap = ethers.parseUnits("1000", 18)
         //console.log("Deploying TokenTemplate...")
-        await token.initialize(nm, sb, owner.address, cap)
+        //await token.initialize(nm, sb, owner.address, cap)
         //console.log("TokenTemplate deployed to:", await token.getAddress())
+        
+
+
+        const ContractFactory = await ethers.getContractFactory("TokenTemplate");
+
+        const token = await upgrades.deployProxy(ContractFactory, [nm, sb, owner.address, cap]);
+        await token.waitForDeployment();
+
 
         return {
-            TokenTemplate, token, owner, addr1, addr2, nm, sb, cap
+            ContractFactory, token, owner, addr1, addr2, nm, sb, cap
         }
 
     }
@@ -37,7 +44,8 @@ describe("TokenTemplate", function () {
             expect(await token.cap()).to.equal(cap)
             expect(await token.name()).to.equal(nm)
             expect(await token.symbol()).to.equal(sb)
-            expect(await token.totalSupply()).to.equal(0)
+            expect(await token.totalSupply()).to.equal(BigInt(0))
+           
 
         })
 
