@@ -28,9 +28,8 @@ contract NftTemplate is
         address initialOwner,
         string memory _name,
         string memory _symbol
-        
     ) public initializer {
-        _NftTemplate_init(initialOwner , _name , _symbol);
+        _NftTemplate_init(initialOwner, _name, _symbol);
     }
 
     function _NftTemplate_init(

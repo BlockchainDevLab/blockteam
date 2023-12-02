@@ -6,6 +6,7 @@ struct TypeBonds {
     uint256 TypeID;
     string Name;
     string Description;
+    uint256[] idxMetadatas; 
     mapping(uint256 => Metadata) Metadatas;
 }
 
