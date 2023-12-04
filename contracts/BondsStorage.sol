@@ -2,7 +2,10 @@
 pragma solidity ^0.8.20;
 
 import "./libraries/BondsLibrary.sol";
+import "./libraries/NFTRenderer.sol";
+
 import "@openzeppelin/contracts/utils/Base64.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 contract BondsStorage {
     mapping(uint256 => TypeBonds) mapBondTypes;
@@ -13,35 +16,6 @@ contract BondsStorage {
     error BondsTypeExist(uint id);
     error ArrayWithDifferentSizes();
     error TreasuryBondsNotExist(uint256 id);
-
-    /*
-    function getBondsDataJSON(uint256 id) public view returns (string memory) {
-        bytes memory metadata = "{";
-        bytes memory metadataParcial;
-        TreasuryBonds storage treasuryBonds = mapBonds[id];
-
-        metadataParcial = abi.encodePacked(
-            '"',
-            "name",
-            '":',
-            '"',
-            treasuryBonds.Name,
-            '",'
-        );
-        metadata = abi.encodePacked(metadata, metadataParcial);
-
-        metadata = abi.encodePacked(metadata, '"attributes": [');
-
-        metadata = abi.encodePacked(metadata, "] }");
-
-        return
-            string(
-                abi.encodePacked(
-                    "data:application/json;base64,",
-                    Base64.encode(metadata)
-                )
-            );
-    }*/
 
     function addBondsType(
         uint256 typeID,
@@ -186,12 +160,104 @@ contract BondsStorage {
         return tBondsValues;
     }
 
-    function constructTokenURI() public pure returns (string memory) {
-        string memory name = "NAME";
+    function constructTokenURI(
+        uint256 bondID
+    ) public view returns (string memory) {
+        string memory name = "";
         string memory image = ""; //Base64.encode(bytes(generateSVGImage(params)));
         string memory description = "";
-        string memory attributes = '{ "teste" : "1" } , { "trait_type": "Tax", "value": "5%" }';
 
+        TreasuryBonds storage treasuryBonds = mapBonds[bondID];
+        TypeBonds storage typeBond = mapBondTypes[treasuryBonds.TypeID];
+
+        name = string(
+            abi.encodePacked(
+                Strings.toString(treasuryBonds.Id),
+                " - ",
+                treasuryBonds.Code,
+                "-",
+                treasuryBonds.Name
+            )
+        );
+
+        (uint year, uint month, uint day) = TimestampToDateYMD(
+            treasuryBonds.MaturityDate
+        );
+
+        string memory date = string(
+            abi.encodePacked(
+                Strings.toString(day),
+                "/",
+                Strings.toString(month),
+                "/",
+                Strings.toString(year)
+            )
+        );
+
+        description = string(
+            abi.encodePacked(
+                "ID:",
+                Strings.toString(treasuryBonds.Id),
+                "CODE:",
+                treasuryBonds.Code,
+                " | ",
+                "Name:",
+                treasuryBonds.Name,
+                typeBond.Name,
+                "-",
+                typeBond.Description,
+                " | ",
+                "Amount:",
+                Strings.toString(treasuryBonds.Amount),
+                " | ",
+                "Maturity Date:",
+                date
+            )
+        );
+
+        image = NFTRenderer.render(
+            NFTRenderer.RenderParams({
+                unitPrice: "???",
+                amount: treasuryBonds.Amount,
+                fee: typeBond.Fee,
+                maturityDate: date,
+                code: treasuryBonds.Code,
+                codeISIN: treasuryBonds.CodeISIN,
+                nameBonds: string(
+                    abi.encodePacked(
+                        treasuryBonds.Name,
+                        " | ",
+                        typeBond.Name,
+                        "-",
+                        typeBond.Description
+                    )
+                )
+            })
+        );
+
+        image = Base64.encode(bytes(image));
+        uint256[] memory idxMeta = typeBond.idxMetadatas;
+
+        bytes memory attributes = "";
+        bytes memory attr = "";
+        bytes memory attrParcial;
+        for (uint i = 0; i < idxMeta.length; i++) {
+            Metadata memory meta = typeBond.Metadatas[idxMeta[i]];
+            attrParcial = abi.encodePacked(
+                '{"',
+                meta.Title,
+                '":"',
+                getStringValue(meta._Type, treasuryBonds.Values[idxMeta[i]]),
+                '"}'
+            );
+
+            if (i < idxMeta.length - 1) {
+                attrParcial = abi.encodePacked(attrParcial, ",");
+            }
+
+            attr = abi.encodePacked(attr, attrParcial);
+        }
+        attributes = abi.encodePacked(attributes, attr);
         return
             string(
                 abi.encodePacked(
@@ -208,7 +274,7 @@ contract BondsStorage {
                                 image,
                                 '", "attributes": [',
                                 attributes,
-                                ']}'
+                                "]}"
                             )
                         )
                     )
@@ -216,7 +282,6 @@ contract BondsStorage {
             );
     }
 
-    // ~~~~~~~~~~~~~~~~~~~~ Various Checks ~~~~~~~~~~~~~~~~~~~~
     function existsBondType(uint256 id) public view returns (bool) {
         return mapBondTypes[id].TypeID != 0;
     }

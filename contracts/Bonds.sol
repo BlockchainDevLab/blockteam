@@ -33,4 +33,6 @@ contract Bonds is NftTemplate {
         bondsStorage.createTreasuryBonds(transaction);
         _mint(to, transaction.TypeID, transaction.Amount, "");
     }
+
+    //code ISIN :US-000402625-0   NA-000K0VF05-4 BRSTNCLTN7S1  BRSTNCLTN7W3 BRSTNCNTB682  BRSTNCNTB0A6
 }

@@ -14,7 +14,19 @@ describe("BondsStorage", function () {
 
         const [owner, addr1, addr2] = await ethers.getSigners()
 
-        const BondsStorage = await ethers.getContractFactory("BondsStorage")
+
+        const NFTRenderer = await ethers.getContractFactory("NFTRenderer") 
+        const nftRenderer = await NFTRenderer.deploy()
+
+
+
+        const BondsStorage = await ethers.getContractFactory("BondsStorage", {
+            libraries: {
+                NFTRenderer: await nftRenderer.getAddress(),
+            },
+        })
+
+        //const BondsStorage = await ethers.getContractFactory("BondsStorage")
         const bondStorage = await BondsStorage.deploy()
         await bondStorage.waitForDeployment()
 
@@ -260,7 +272,7 @@ describe("BondsStorage", function () {
             const bondsMetaValues = await bondStorage.getTreasuryBondsValues(202201100)
             console.log("BONDS VALUES")
             //console.log(bondsMetaValues)
-            const strJSON = await bondStorage.constructTokenURI()
+            const strJSON = await bondStorage.constructTokenURI(202201100)
             console.log(strJSON)
         
             /*

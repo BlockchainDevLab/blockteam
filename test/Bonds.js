@@ -34,7 +34,14 @@ describe("Bonds", function () {
         //await instanceAccessControl.waitForDeployment();
 
         //BONDS STORAGE 
-        const BondsStorage = await ethers.getContractFactory("BondsStorage")
+        const NFTRenderer = await ethers.getContractFactory("NFTRenderer") 
+        const nftRenderer = await NFTRenderer.deploy()
+        
+        const BondsStorage = await ethers.getContractFactory("BondsStorage", {
+            libraries: {
+                NFTRenderer: await nftRenderer.getAddress(),
+            },
+        })
         const bondStorage = await BondsStorage.deploy()
         await bondStorage.waitForDeployment()
 
@@ -47,7 +54,7 @@ describe("Bonds", function () {
         const bondInstance = await upgrades.deployProxy(Bonds, [owner.address, await accessControl.getAddress(), await bondStorage.getAddress(), "TFP", "TESOURO FEDERAL PUBLICO BR"]);
         await bondInstance.waitForDeployment()
 
-        return { Bonds, bondInstance, bondStorage ,owner, addr1, addr2 }
+        return { Bonds, bondInstance, bondStorage, owner, addr1, addr2 }
 
     }
 
@@ -56,7 +63,7 @@ describe("Bonds", function () {
         it("Should set the right owner, name, symbol", async function () {
 
             const {
-                Bonds, bondInstance, bondStorage ,owner, addr1, addr2 
+                Bonds, bondInstance, bondStorage, owner, addr1, addr2
             } = await loadFixture(deployBonds)
             expect(await bondInstance.name()).to.equal("TFP")
         })
@@ -70,7 +77,7 @@ describe("Bonds", function () {
         it("ISSUE  Bonds ", async function () {
 
             const {
-                Bonds, bondInstance, bondStorage ,owner, addr1, addr2 
+                Bonds, bondInstance, bondStorage, owner, addr1, addr2
             } = await loadFixture(deployBonds)
             expect(await bondInstance.owner()).to.equal(owner.address)
 
@@ -108,7 +115,7 @@ describe("Bonds", function () {
         it("createTreasuryBondsValues", async function () {
 
             const {
-                Bonds, bondInstance, bondStorage ,owner, addr1, addr2 
+                Bonds, bondInstance, bondStorage, owner, addr1, addr2
             } = await loadFixture(deployBonds)
 
 
@@ -146,6 +153,8 @@ describe("Bonds", function () {
             expect(metadata[0]).to.equal("symbol")
             expect(metadata[2]).to.equal("the collateral token's symbol")
 
+            const date = new Date('2025-12-22');
+            const unixTimestamp = Math.floor(date.getTime() / 1000);
 
             const transaction = {
                 'Id': 202201100,
@@ -154,7 +163,7 @@ describe("Bonds", function () {
                 'Code': 'BRTS1003',
                 'CodeISIN': 'BRSTNCLTN7W3',
                 'Amount': 100,
-                'MaturityDate': new Date(2025, 12, 1).getTime()
+                'MaturityDate': 1765211486
             }
             await bondInstance.issue(addr1.address, transaction)
 
