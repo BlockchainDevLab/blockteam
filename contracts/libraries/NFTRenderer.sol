@@ -25,7 +25,7 @@ library NFTRenderer {
             ".tick { font: normal 18px sans-serif; }</style>",
             renderBackground("XXXXX", 1 , 2),
             renderTop(params.code, params.codeISIN, params.nameBonds),
-            renderBottom(params.unitPrice, params.amount, params.fee, params.maturityDate),
+            renderBottom(params.amount, params.fee, params.maturityDate),
             "</svg>"
         );
 
@@ -81,16 +81,12 @@ library NFTRenderer {
 
 
     function renderBottom(
-        string memory unitPrice,
         uint256 amount,
         string memory fee,
         string memory maturityDate
     ) internal pure returns (string memory bottom) {
         bottom = string.concat(
             '<rect x="30" y="282" width="240" height="24"/>',
-            '<text x="39" y="300" class="tick" fill="#fff">Unit price: ',
-            unitPrice , 
-            "</text>",
             '<rect x="30" y="312" width="240" height="24"/>',
             '<text x="39" y="330" class="tick" fill="#fff">Amount: ',
             Strings.toString(amount),

@@ -20,7 +20,8 @@ contract BondsStorage {
     function addBondsType(
         uint256 typeID,
         string memory nameType,
-        string memory descriptionType
+        string memory descriptionType,
+        string memory feeType
     ) external {
         if (existsBondType(typeID)) {
             revert BondsTypeExist(typeID);
@@ -30,6 +31,7 @@ contract BondsStorage {
         newBondsType.Description = descriptionType;
         newBondsType.Name = nameType;
         newBondsType.TypeID = typeID;
+        newBondsType.Fee = feeType;
         idxBondTypes.push(typeID);
     }
 

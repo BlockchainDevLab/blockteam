@@ -15,7 +15,7 @@ describe("BondsStorage", function () {
         const [owner, addr1, addr2] = await ethers.getSigners()
 
 
-        const NFTRenderer = await ethers.getContractFactory("NFTRenderer") 
+        const NFTRenderer = await ethers.getContractFactory("NFTRenderer")
         const nftRenderer = await NFTRenderer.deploy()
 
 
@@ -61,7 +61,8 @@ describe("BondsStorage", function () {
 
             await bondStorage.addBondsType(1,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                '6% a.a')
 
 
             const bondType = await bondStorage.getBondsType(1)
@@ -81,13 +82,14 @@ describe("BondsStorage", function () {
 
             await bondStorage.addBondsType(1,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                '6% a.a')
 
 
             await expect(
                 bondStorage.addBondsType(1,
                     "BTNX",
-                    "Bônus do Tesouro Nacional")).to.be.revertedWithCustomError(bondStorage,
+                    "Bônus do Tesouro Nacional", '6% a.a')).to.be.revertedWithCustomError(bondStorage,
                         'BondsTypeExist')
 
 
@@ -102,7 +104,7 @@ describe("BondsStorage", function () {
 
             await bondStorage.addBondsType(1,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional", '6% a.a')
 
             const bondType = await bondStorage.getBondsType(1)
             //console.log(bondType)
@@ -119,7 +121,8 @@ describe("BondsStorage", function () {
 
             await bondStorage.addBondsType(1,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                "6% a.a")
 
             await expect(
                 bondStorage.getBondsType(10)).to.be.revertedWithCustomError(bondStorage,
@@ -132,18 +135,22 @@ describe("BondsStorage", function () {
                 Bonds, bondStorage, owner, addr1, addr2
             } = await loadFixture(deployBonds)
 
+
             await bondStorage.addBondsType(1,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                '6% a.a')
 
             await bondStorage.addBondsType(2,
                 "LTN",
-                "Letra do Tesouro Nacional")
-
+                "Letra do Tesouro Nacional",
+                "Deságio sobre o valor nominal.")
 
             await bondStorage.addBondsType(3,
                 "NTN-A1",
-                "NTN-A1 – Notas do Tesouro Nacional Subsérie A1")
+                "NTN-A1 – Notas do Tesouro Nacional Subsérie A1",
+                '6% a.a')
+
 
             const idxBondType = await bondStorage.getBondsTypes()
             expect(idxBondType[0]).to.equal(1)
@@ -160,7 +167,8 @@ describe("BondsStorage", function () {
 
             await bondStorage.addBondsType(100,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                '6% a.a')
 
 
             const stnRole = ethers.encodeBytes32String("STN_ROLE")
@@ -204,7 +212,8 @@ describe("BondsStorage", function () {
 
             await bondStorage.addBondsType(100,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                "6% a.a")
 
 
             const stnRole = ethers.encodeBytes32String("STN_ROLE")
@@ -245,7 +254,7 @@ describe("BondsStorage", function () {
                 'Amount': 100,
                 'MaturityDate': new Date(2025, 12, 1).getTime()
             }
-            
+
             await bondStorage.createTreasuryBonds(transaction)
 
             const defaultValue = {
@@ -274,7 +283,7 @@ describe("BondsStorage", function () {
             //console.log(bondsMetaValues)
             const strJSON = await bondStorage.constructTokenURI(202201100)
             console.log(strJSON)
-        
+
             /*
             await bondInstance.createTreasuryBondsValues(
                 uint256 bondID,

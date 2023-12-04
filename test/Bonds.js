@@ -83,16 +83,19 @@ describe("Bonds", function () {
 
             await bondStorage.addBondsType(1,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                '6% a.a')
 
             await bondStorage.addBondsType(2,
                 "LTN",
-                "Letra do Tesouro Nacional")
+                "Letra do Tesouro Nacional",
+                "Deságio sobre o valor nominal.")
 
 
             await bondStorage.addBondsType(3,
                 "NTN-A1",
-                "NTN-A1 – Notas do Tesouro Nacional Subsérie A1")
+                "NTN-A1 – Notas do Tesouro Nacional Subsérie A1",
+                 '6% a.a')
 
             const idxBondType = await bondStorage.getBondsTypes()
             expect(idxBondType[0]).to.equal(1)
@@ -122,7 +125,8 @@ describe("Bonds", function () {
 
             await bondStorage.addBondsType(100,
                 "BTN",
-                "Bônus do Tesouro Nacional")
+                "Bônus do Tesouro Nacional",
+                "6% a.a")
 
 
             const stnRole = ethers.encodeBytes32String("STN_ROLE")
