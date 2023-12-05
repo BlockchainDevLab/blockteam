@@ -4,10 +4,12 @@ pragma solidity ^0.8.20;
 import "./libraries/BondsLibrary.sol";
 import "./libraries/NFTRenderer.sol";
 
+import "./AccessControlRoleGroup.sol";
+
 import "@openzeppelin/contracts/utils/Base64.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
-contract BondsStorage {
+contract BondsStorage is AccessControlRoleGroup, AccessControlProxy {
     mapping(uint256 => TypeBonds) mapBondTypes;
     mapping(uint256 => TreasuryBonds) mapBonds;
     uint256[] idxBondTypes;
@@ -16,13 +18,24 @@ contract BondsStorage {
     error BondsTypeExist(uint id);
     error ArrayWithDifferentSizes();
     error TreasuryBondsNotExist(uint256 id);
+    error TreasuryBondsMaxSupply(uint256 id);
+
+    constructor(address addrAcessControl) {
+        AccessControlProxyInit(addrAcessControl);
+    }
 
     function addBondsType(
         uint256 typeID,
         string memory nameType,
         string memory descriptionType,
         string memory feeType
-    ) external {
+    )
+        external
+        onlyRoleGroup(
+            AccessControlRoleGroup.STN_GROUP,
+            AccessControlRoleGroup.CREATE_TYPE_ROLE
+        )
+    {
         if (existsBondType(typeID)) {
             revert BondsTypeExist(typeID);
         }
@@ -37,14 +50,19 @@ contract BondsStorage {
 
     function getBondsType(
         uint256 typeId
-    ) external view returns (uint256, string memory, string memory) {
+    ) external view returns (uint256, string memory, string memory, uint256) {
         if (!existsBondType(typeId)) {
             revert BondsTypeNotExist(typeId);
         }
 
         TypeBonds storage resultBond = mapBondTypes[typeId];
 
-        return (resultBond.TypeID, resultBond.Name, resultBond.Description);
+        return (
+            resultBond.TypeID,
+            resultBond.Name,
+            resultBond.Description,
+            resultBond.MaxSupply
+        );
     }
 
     function getBondsTypes() external view returns (uint256[] memory) {
@@ -55,7 +73,13 @@ contract BondsStorage {
         uint256 typeId,
         uint[] memory metadataIds,
         Metadata[] memory metadatas
-    ) external {
+    )
+        external
+        onlyRoleGroup(
+            AccessControlRoleGroup.STN_GROUP,
+            AccessControlRoleGroup.CREATE_TYPE_ROLE
+        )
+    {
         if (!existsBondType(typeId)) {
             revert BondsTypeNotExist(typeId);
         }
@@ -87,7 +111,7 @@ contract BondsStorage {
     function getBondsTypeMetadata(
         uint256 typeId,
         uint256 idMetadata
-    ) external view returns (Metadata memory) {
+    ) public view returns (Metadata memory) {
         if (!existsBondType(typeId)) {
             revert BondsTypeNotExist(typeId);
         }
@@ -96,12 +120,31 @@ contract BondsStorage {
         return typeBond.Metadatas[idMetadata];
     }
 
-    function createTreasuryBonds(Transaction calldata transaction) external {
+    function getBondsTypeMetadataRoleAcess(
+        uint256 typeId,
+        uint256 idMetadata
+    ) public view returns (bytes32) {
+        if (!existsBondType(typeId)) {
+            revert BondsTypeNotExist(typeId);
+        }
+
+        TypeBonds storage typeBond = mapBondTypes[typeId];
+        return typeBond.Metadatas[idMetadata].RoleAcess;
+    }
+
+    function createTreasuryBonds(
+        Transaction calldata transaction
+    )
+        external
+        onlyRoleGroup(
+            AccessControlRoleGroup.STN_GROUP,
+            AccessControlRoleGroup.CREATE_BOND_ROLE
+        )
+    {
         if (!existsBondType(transaction.TypeID)) {
             revert BondsTypeNotExist(transaction.TypeID);
         }
 
-        //TODO CHECKS
         TreasuryBonds storage treasuryBonds = mapBonds[transaction.Id];
         treasuryBonds.Id = transaction.Id;
         treasuryBonds.TypeID = transaction.TypeID;
@@ -116,7 +159,7 @@ contract BondsStorage {
         uint256 bondID,
         uint256[] calldata metadataIds,
         Values[] calldata values
-    ) external {
+    ) external onlyRole(AccessControlRoleGroup.CREATE_BOND_VALUES) {
         if (!existsTreasuryBonds(bondID)) {
             revert TreasuryBondsNotExist(bondID);
         }
@@ -126,6 +169,22 @@ contract BondsStorage {
         }
 
         TreasuryBonds storage treasuryBonds = mapBonds[bondID];
+        TypeBonds storage typeBonds = mapBondTypes[treasuryBonds.TypeID];
+
+        //verify roles
+        bytes32 role;
+        bool hasAcess;
+        for (uint256 i; i < metadataIds.length; i++) {
+            role = getBondsTypeMetadataRoleAcess(
+                treasuryBonds.TypeID,
+                metadataIds[i]
+            );
+            hasAcess = accessControl.verifyRole(role, msg.sender);
+            //
+            if (!hasAcess) {
+                revert ROLES_RequireRole(role);
+            }
+        }
 
         for (uint256 i; i < metadataIds.length; i++) {
             treasuryBonds.Values[metadataIds[i]] = values[i];
@@ -246,9 +305,10 @@ contract BondsStorage {
         for (uint i = 0; i < idxMeta.length; i++) {
             Metadata memory meta = typeBond.Metadatas[idxMeta[i]];
             attrParcial = abi.encodePacked(
-                '{"',
+                '{ "trait_type": "',
                 meta.Title,
-                '":"',
+                '" , ',
+                '"value":"',
                 getStringValue(meta._Type, treasuryBonds.Values[idxMeta[i]]),
                 '"}'
             );
@@ -260,6 +320,7 @@ contract BondsStorage {
             attr = abi.encodePacked(attr, attrParcial);
         }
         attributes = abi.encodePacked(attributes, attr);
+
         return
             string(
                 abi.encodePacked(

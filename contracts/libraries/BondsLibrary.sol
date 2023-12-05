@@ -8,6 +8,7 @@ struct TypeBonds {
     string Name;
     string Description;
     string Fee; 
+    uint256 MaxSupply;
     uint256[] idxMetadatas;
     mapping(uint256 => Metadata) Metadatas;
 }
@@ -18,6 +19,7 @@ struct TreasuryBonds {
     string Code;
     string CodeISIN;
     string Name;
+    string  Ratings; 
     uint256 MaturityDate;
     uint256 Amount;
 

@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./AccessControl.sol";
 
-contract AccessControlProxy is Initializable {
+contract AccessControlProxy  {
     AccessControl accessControl;
 
     // =========  ERRORS ========= //
@@ -24,15 +24,15 @@ contract AccessControlProxy is Initializable {
         _;
     }
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
+  
     constructor() {
-        _disableInitializers();
+       
     }
 
-    function _AccessControlProxy_init(
-        address addraccessControl
-    ) internal initializer {
-        accessControl = AccessControl(addraccessControl);
+    function  AccessControlProxyInit(
+        address addrAccessControl
+    ) internal {
+        accessControl = AccessControl(addrAccessControl);
     }
 
     function getAccessControl() external view returns (address) {

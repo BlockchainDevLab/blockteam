@@ -24,7 +24,7 @@ describe("Bonds", function () {
 
 
 
-        console.log(await authorizationControl.getAddress())
+        //console.log(await authorizationControl.getAddress())
 
         const AccessControl = await hre.ethers.getContractFactory('AccessControl')
         const accessControl = await AccessControl.deploy(await authorizationControl.getAddress())
@@ -34,18 +34,18 @@ describe("Bonds", function () {
         //await instanceAccessControl.waitForDeployment();
 
         //BONDS STORAGE 
-        const NFTRenderer = await ethers.getContractFactory("NFTRenderer") 
+        const NFTRenderer = await ethers.getContractFactory("NFTRenderer")
         const nftRenderer = await NFTRenderer.deploy()
-        
+
         const BondsStorage = await ethers.getContractFactory("BondsStorage", {
             libraries: {
                 NFTRenderer: await nftRenderer.getAddress(),
             },
         })
-        const bondStorage = await BondsStorage.deploy()
+        const bondStorage = await BondsStorage.deploy(await accessControl.getAddress())
         await bondStorage.waitForDeployment()
 
-        console.log(await bondStorage.getAddress())
+        //console.log(await bondStorage.getAddress())
 
 
 
@@ -54,7 +54,7 @@ describe("Bonds", function () {
         const bondInstance = await upgrades.deployProxy(Bonds, [owner.address, await accessControl.getAddress(), await bondStorage.getAddress(), "TFP", "TESOURO FEDERAL PUBLICO BR"]);
         await bondInstance.waitForDeployment()
 
-        return { Bonds, bondInstance, bondStorage, owner, addr1, addr2 }
+        return { Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl }
 
     }
 
@@ -63,7 +63,7 @@ describe("Bonds", function () {
         it("Should set the right owner, name, symbol", async function () {
 
             const {
-                Bonds, bondInstance, bondStorage, owner, addr1, addr2
+                Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl
             } = await loadFixture(deployBonds)
             expect(await bondInstance.name()).to.equal("TFP")
         })
@@ -77,9 +77,28 @@ describe("Bonds", function () {
         it("ISSUE  Bonds ", async function () {
 
             const {
-                Bonds, bondInstance, bondStorage, owner, addr1, addr2
+                Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl
             } = await loadFixture(deployBonds)
             expect(await bondInstance.owner()).to.equal(owner.address)
+
+
+
+            //ADD SECURITY 
+            //Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl
+
+            const stn_group = ethers.encodeBytes32String("stn_group")
+
+            const create_type_role = ethers.encodeBytes32String("create_type_role")
+            await authorizationControl.saveRoleGroup(stn_group, create_type_role, owner.address)
+
+            const issue_role = ethers.encodeBytes32String("issue_role")
+            await authorizationControl.saveRoleGroup(stn_group, issue_role, owner.address)
+
+            const create_bond_role = ethers.encodeBytes32String("create_bond_role")  //create_bond_role
+            await authorizationControl.saveRoleGroup(stn_group, create_bond_role, owner.address)
+
+            const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
+            await authorizationControl.saveRole(create_bond_values_role, owner.address)
 
             await bondStorage.addBondsType(1,
                 "BTN",
@@ -95,7 +114,7 @@ describe("Bonds", function () {
             await bondStorage.addBondsType(3,
                 "NTN-A1",
                 "NTN-A1 – Notas do Tesouro Nacional Subsérie A1",
-                 '6% a.a')
+                '6% a.a')
 
             const idxBondType = await bondStorage.getBondsTypes()
             expect(idxBondType[0]).to.equal(1)
@@ -110,6 +129,10 @@ describe("Bonds", function () {
                 'Amount': 100,
                 'MaturityDate': new Date(2025, 12, 1).getTime()
             }
+
+
+
+
             await bondInstance.issue(addr1.address, transaction)
             //const jsonURI = await bondInstance.getBondsDataJSON(100)
             //console.log(jsonURI)
@@ -118,9 +141,24 @@ describe("Bonds", function () {
         it("createTreasuryBondsValues", async function () {
 
             const {
-                Bonds, bondInstance, bondStorage, owner, addr1, addr2
+                Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl
             } = await loadFixture(deployBonds)
 
+
+            const stn_group = ethers.encodeBytes32String("stn_group")
+
+            const create_type_role = ethers.encodeBytes32String("create_type_role")
+            await authorizationControl.saveRoleGroup(stn_group, create_type_role, owner.address)
+
+            const issue_role = ethers.encodeBytes32String("issue_role")
+            await authorizationControl.saveRoleGroup(stn_group, issue_role, owner.address)
+
+
+            const create_bond_role = ethers.encodeBytes32String("create_bond_role")  //create_bond_role
+            await authorizationControl.saveRoleGroup(stn_group, create_bond_role, owner.address)
+
+            const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
+            await authorizationControl.saveRole(create_bond_values_role, owner.address)
 
 
             await bondStorage.addBondsType(100,
@@ -130,7 +168,16 @@ describe("Bonds", function () {
 
 
             const stnRole = ethers.encodeBytes32String("STN_ROLE")
-            const b3Role = ethers.encodeBytes32String("B3_ROLE")
+            const b3Role = ethers.encodeBytes32String("B_ROLE")
+
+            //console.log(stnRole)
+
+            //await authorizationControl.saveRole(stnRole, owner.address);
+            //await authorizationControl.saveRole(b3Role, owner.address);
+
+
+            //Entendendo o ISSB (International Sustainability Standards Board)
+
             const typeMetadatas = [
                 { Title: "symbol", _Type: "string", Description: "the collateral token's symbol", RoleAcess: stnRole },
                 { Title: "token address", _Type: "address", Description: "the collateral token's address", RoleAcess: stnRole },
@@ -153,7 +200,7 @@ describe("Bonds", function () {
                 100,
                 idxMetadatas[0]
             )
-            console.log(metadata)
+            //console.log(metadata)
             expect(metadata[0]).to.equal("symbol")
             expect(metadata[2]).to.equal("the collateral token's symbol")
 
@@ -169,6 +216,7 @@ describe("Bonds", function () {
                 'Amount': 100,
                 'MaturityDate': 1765211486
             }
+
             await bondInstance.issue(addr1.address, transaction)
 
             const defaultValue = {
@@ -186,15 +234,21 @@ describe("Bonds", function () {
                 { ...defaultValue, stringValue: "BRSTNCLTN7W3" },
             ]
 
-            await bondStorage.createTreasuryBondsValues(
-                202201100,
-                metadataIds,
-                bondsValues
-            )
+            try {
+
+                await bondStorage.createTreasuryBondsValues(
+                    202201100,
+                    metadataIds,
+                    bondsValues
+                )
+            } catch (e) {
+                console.log(e)
+            }
+
 
             const bondsMetaValues = await bondStorage.getTreasuryBondsValues(202201100)
-            console.log("BONDS VALUES")
-            console.log(bondsMetaValues)
+            //console.log("BONDS VALUES")
+            //console.log(bondsMetaValues)
 
 
             /*

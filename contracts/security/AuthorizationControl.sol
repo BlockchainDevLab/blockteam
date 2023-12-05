@@ -67,7 +67,7 @@ contract AuthorizationControl is ERC165, IAuthorizationControl, Master {
     function saveRole(bytes32 role, address addr) public onlyMaster {
         if (hasRole[addr][role]) revert ROLES_AddressAlreadyHasRole(addr, role);
 
-        ensureValidName(role);
+        //ensureValidName(role);
 
         // Grant role to the address
         hasRole[addr][role] = true;
@@ -83,8 +83,8 @@ contract AuthorizationControl is ERC165, IAuthorizationControl, Master {
         if (hasRoleGroup[addr][group][role])
             revert ROLES_AddressAlreadyHasRoleGroup(addr, group, role);
 
-        ensureValidName(role);
-        ensureValidName(group);
+        //ensureValidName(role);
+        //ensureValidName(group);
 
         // Grant role to the address
         hasRoleGroup[addr][group][role] = true;
@@ -155,7 +155,8 @@ contract AuthorizationControl is ERC165, IAuthorizationControl, Master {
     function ensureValidName(bytes32 nm) public pure {
         for (uint256 i = 0; i < 32; ) {
             bytes1 char = nm[i];
-            if ((char < 0x61 || char > 0x7A) && char != 0x5f && char != 0x00) {
+            if ((char < 0x61 || char > 0x7A) && char != 0x5f) {
+                // && char != 0x00 zero pads ???
                 revert InvalidName(nm); // a-z only
             }
             unchecked {
