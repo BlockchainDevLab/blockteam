@@ -17,7 +17,7 @@ Os contratos resultantes da simulação podem ser perfeitamente integrados aos s
       npx hardhat run scripts/1-deploy.js --network mumbai
 **OBS: colocar as configurações no arquivo .env - veja o exemplo env.example**
 
-## 2 - CRIAR OS TIPOS DE TITULOS
+## 2 -  AUTORIZAR OS  ACESSOS
 
        npx hardhat run scripts/2-security-roles.js --network mumbai
 
@@ -47,10 +47,11 @@ O título foi tokenizado utilizando o padrão ERC-1155, uma norma de token não 
 
 ![Contrato](/docs/image-titulo.svg)
 
-(NFT OPEN SEA)[https://testnets.opensea.io/assets/mumbai/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d/202201101]
+[NFT OPEN SEA][https://testnets.opensea.io/assets/mumbai/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d/202201101]
 
 
-(Registro do contrato)[https://mumbai.polygonscan.com/address/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d]
+[REGISTRO DO CONTRATO)
+[https://mumbai.polygonscan.com/address/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d]
 
 
 
