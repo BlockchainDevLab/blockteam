@@ -20,10 +20,7 @@ describe("BondsStorage", function () {
         const authorizationControl = await AuthorizationControl.deploy(owner.address)
         await authorizationControl.waitForDeployment()
 
-
         //
-
-
         const stn_group = ethers.encodeBytes32String("stn_group")
 
         const create_type_role = ethers.encodeBytes32String("create_type_role")
@@ -110,9 +107,6 @@ describe("BondsStorage", function () {
             const {
                 BondsStorage, bondStorage, owner, addr1, addr2, authorizationControl
             } = await loadFixture(deployBonds)
-
-
-
 
             await bondStorage.addBondsType(1,
                 "BTN",
@@ -255,13 +249,13 @@ describe("BondsStorage", function () {
                 "6% a.a")
 
 
-                const stnRole = ethers.encodeBytes32String("STN_DATA_ROLE")
-                const b3Role = ethers.encodeBytes32String("B_DATA_ROLE")
-    
-                //console.log(stnRole)
-    
-                await authorizationControl.saveRole(stnRole, owner.address);
-                await authorizationControl.saveRole(b3Role, owner.address);
+            const stnRole = ethers.encodeBytes32String("STN_DATA_ROLE")
+            const b3Role = ethers.encodeBytes32String("B_DATA_ROLE")
+
+            //console.log(stnRole)
+
+            await authorizationControl.saveRole(stnRole, owner.address);
+            await authorizationControl.saveRole(b3Role, owner.address);
             //add roles to owner 
 
 
@@ -329,7 +323,7 @@ describe("BondsStorage", function () {
             //console.log("BONDS VALUES")
             //console.log(bondsMetaValues)
             const strJSON = await bondStorage.constructTokenURI(202201100)
-            console.log(strJSON)
+            //console.log(strJSON)
 
             /*
             await bondInstance.createTreasuryBondsValues(

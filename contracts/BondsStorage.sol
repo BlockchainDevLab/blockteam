@@ -180,7 +180,7 @@ contract BondsStorage is AccessControlRoleGroup, AccessControlProxy {
                 metadataIds[i]
             );
             accessControl.verifyRole(role, msg.sender);
-            //hasAcess = accessControl.verifyRole(role, msg.sender);
+            hasAcess = accessControl.verifyRole(role, msg.sender);
             if (!hasAcess) {
                 revert ROLES_RequireRole(role);
             }

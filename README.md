@@ -1,4 +1,4 @@
-# BLOCKTEAM Títulos Soberanos Sustentáveis #
+# BLOCKTEAM: Títulos Soberanos Sustentáveis Tokenizados #
 
 ## Simulação de Emissão de Títulos via Scripts na Blockchain
 
@@ -42,7 +42,7 @@ Os próximos passos incluem testes mais abrangentes, feedback contínuo e a prep
 
 **NFT ERC-1155**
 
-O título foi tokenizado utilizando o padrão ERC-1155, uma norma de token não fungível que oferece maior flexibilidade ao suportar vários tokens em uma única contraparte. A decisão de utilizar o padrão ERC-1155 para representar títulos revela-se estratégica devido às suas características distintivas. Este padrão permite a fracionação eficiente dos ativos, simplificando a gestão ao consolidar diferentes tipos de títulos em um único smart contract. Além de reduzir custos e complexidades, o ERC-1155 é amplamente reconhecido na indústria, proporcionando interoperabilidade e facilitando a implementação de lógicas de negócios personalizadas. Essa escolha promove um ecossistema mais dinâmico, acessível e adaptável para os participantes.
+O título foi tokenizado utilizando o padrão ERC-1155, uma norma de token não fungível que oferece maior flexibilidade ao suportar vários tokens em uma única contraparte. A decisão de utilizar o padrão ERC-1155 para representar títulos revela-se estratégica devido às suas características distintivas. Este padrão permite a fracionação eficiente dos ativos, simplificando a gestão ao consolidar diferentes tipos de títulos em um único smart contract. Além de reduzir custos e complexidades, o ERC-1155 é amplamente reconhecido na indústria, proporcionando interoperabilidade e facilitando a implementação de lógicas de negócios personalizadas. Essa escolha promove um ecossistema mais dinâmico, padronizado e adaptável para os participantes.
 
 
 ![Contrato](/docs/image-titulo.svg)
@@ -54,12 +54,15 @@ O título foi tokenizado utilizando o padrão ERC-1155, uma norma de token não 
 [https://mumbai.polygonscan.com/address/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d]
 
 
-
 # ARQUITETURA DOS CONTRATOS
 
 **Segurança e Interoperabilidade:**
 
 A arquitetura de segurança implementada visa promover a interoperabilidade ao fornecer informações específicas para os títulos, adaptadas às necessidades de cada agente participante do processo. Essa abordagem assegura que apenas agentes autorizados possuam a capacidade de modificar os dados definidos nos metadados associados a cada tipo de título.
+
+**Personalização e Controle de Metadados nos Títulos**
+
+A capacidade de personalizar os títulos de acordo com suas características específicas é fornecida por meio dos metadados. Simultaneamente, implementamos um modelo de controle rigoroso, onde apenas os agentes autorizados têm a permissão de inserir ou atualizar informações nos títulos, conforme definido pelo "papel" associado à conta no controle de segurança (AuthorizationControl). Esse enfoque assegura que apenas as partes devidamente autorizadas possam atualizar as informações dos títulos, garantindo a integridade e a segurança do registro do título.
 
 **Controle de Acesso:**
 
@@ -76,7 +79,7 @@ A arquitetura de segurança é projetada de forma centralizada, compartilhada en
 
 **Módulo de Segurança de Hardware (HSM):**
 
-![Integração com HSM](/docs/HSM-ESQUEMA.png)
+
 
 
 Um Módulo de Segurança de Hardware (HSM) é um dispositivo físico dedicado projetado para proteger e gerenciar chaves criptográficas, além de realizar operações criptográficas. Com características de alta resistência a adulterações e desempenho robusto, os HSMs são ideais para salvaguardar dados sensíveis e facilitar transações digitais.
@@ -92,3 +95,5 @@ Amplamente empregados em setores que lidam com volumes substanciais de informaç
 * **Melhoria da Confiança do Cliente:** Reforçam a confiança do cliente ao demonstrar um compromisso robusto com a segurança de dados.
 
 O uso de HSMs representa uma estratégia eficaz para proteger informações críticas e fortalecer a integridade das operações digitais em diversos setores sensíveis.
+
+![Integração com HSM](/docs/HSM-ESQUEMA.png)

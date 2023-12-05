@@ -39,10 +39,7 @@ describe("Bonds", function () {
         const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
         await authorizationControl.saveRole(create_bond_values_role, owner.address)
 
-        //
-
-
-        //console.log(await authorizationControl.getAddress())
+        
 
         const AccessControl = await hre.ethers.getContractFactory('AccessControl')
         const accessControl = await AccessControl.deploy(await authorizationControl.getAddress())
@@ -195,7 +192,7 @@ describe("Bonds", function () {
                 'MaturityDate': 1765211486
             }
 
-            
+
             await bondStorage.createTreasuryBonds(transaction);
             await bondInstance.issue(addr1.address, transaction)
 
