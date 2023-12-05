@@ -47,6 +47,8 @@ Essa estrutura proporciona um nível robusto de controle e segurança, garantind
 
 **Módulo de Segurança de Hardware (HSM):**
 
+![Integração com HSM](/docs/TN Green Bonds Tokenizados.png)
+
 Um Módulo de Segurança de Hardware (HSM) é um dispositivo físico dedicado projetado para proteger e gerenciar chaves criptográficas, além de realizar operações criptográficas. Com características de alta resistência a adulterações e desempenho robusto, os HSMs são ideais para salvaguardar dados sensíveis e facilitar transações digitais.
 
 Amplamente empregados em setores que lidam com volumes substanciais de informações sensíveis, como bancos, finanças e saúde, os HSMs oferecem diversos benefícios:
