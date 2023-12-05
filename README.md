@@ -1,16 +1,34 @@
 # BLOCKTEAM: Títulos Soberanos Sustentáveis Tokenizados #
 
-## Simulação de Emissão de Títulos via Scripts na Blockchain
+Automatizar a padronização e compliance dos títulos sustentáveis para criar um ciclo de prosperidade e impacto socioambiental.
 
 A blockchain desempenha o papel crucial de servir como um registro imutável e seguro para os títulos emitidos. Promovendo a interoperabilidade ao possibilitar a comunicação eficiente entre diferentes partes envolvidas no ecossistema.
+
+## **Benefícios**
+
+Segurança - a Blockchain traz segurança resiliência e transparência para a gestão dos Títulos Soberanos Sustentáveis
+
+
+Gestão - A STN e o CFSS têm total controle sobre a emissão de ativos e registro de dados
+
+
+Transparência - Melhores condições de price discovery e monitoramento de dados das beneficiárias, graças à unificação dos dados em um único ativo
+
+
+
+
+## Integração aos Sistemas de Informação e Controle
+
+Os contratos resultantes da simulação podem ser perfeitamente integrados aos sistemas de informação e controle existentes. Essa integração permite que os dados e eventos relacionados aos títulos sejam automaticamente registrados e rastreados.
+
+![Contrato](/docs/fluxo.jpeg)
+
+## Simulação de Emissão de Títulos via Scripts na Blockchain
 
 Nessa simulação, scripts programáticos podem ser utilizados para criar e gerenciar títulos, possibilitando uma visão prática e ajustada do funcionamento real do sistema.
 
 Os scripts permitem a definição precisa de parâmetros para a criação de títulos. Essa flexibilidade facilita a adaptação do processo de emissão conforme as necessidades específicas, garantindo uma representação próxima  do cenário operacional.
 
-## Integração aos Sistemas de Informação e Controle
-
-Os contratos resultantes da simulação podem ser perfeitamente integrados aos sistemas de informação e controle existentes. Essa integração permite que os dados e eventos relacionados aos títulos sejam automaticamente registrados e rastreados.
 
 ## 1 - DEPLOY DO CONTRATO
 
@@ -56,7 +74,7 @@ O título foi tokenizado utilizando o padrão ERC-1155, uma norma de token não 
 
 # ARQUITETURA DOS CONTRATOS
 
-**Segurança e Interoperabilidade:**
+**Segurança e Interoperabilidade**
 
 A arquitetura de segurança implementada visa promover a interoperabilidade ao fornecer informações específicas para os títulos, adaptadas às necessidades de cada agente participante do processo. Essa abordagem assegura que apenas agentes autorizados possuam a capacidade de modificar os dados definidos nos metadados associados a cada tipo de título.
 
@@ -64,20 +82,20 @@ A arquitetura de segurança implementada visa promover a interoperabilidade ao f
 
 A capacidade de personalizar os títulos de acordo com suas características específicas é fornecida por meio dos metadados. Simultaneamente, implementamos um modelo de controle rigoroso, onde apenas os agentes autorizados têm a permissão de inserir ou atualizar informações nos títulos, conforme definido pelo "papel" associado à conta no controle de segurança (AuthorizationControl). Esse enfoque assegura que apenas as partes devidamente autorizadas possam atualizar as informações dos títulos, garantindo a integridade e a segurança do registro do título.
 
-**Controle de Acesso:**
+**Controle de Acesso**
 
 O acesso e a manipulação dos "papéis" ou funções estão restritos a um usuário MASTER exclusivo. Somente este usuário MASTER tem o privilégio de adicionar contas com acesso a essas funções específicas. Vale ressaltar que a conta MASTER é configurada como uma conta mult - signer, com a flexibilidade de ser gerenciada por um dispositivo de Segurança de Módulo de Hardware (HSM, na sigla em inglês).
 
 Essa estrutura proporciona um nível robusto de controle e segurança, garantindo que apenas usuários devidamente autorizados possam influenciar as configurações e operações fundamentais relacionadas aos títulos, enquanto a conta MASTER, gerenciada por HSM, confere uma camada adicional de proteção à integridade do sistema.
 
-**Arquitetura de segurança:**
+**Arquitetura de segurança**
 
 A arquitetura de segurança é projetada de forma centralizada, compartilhada entre os diversos contratos inteligentes, eliminando a necessidade de atualizações em todos os contratos relacionados aos papéis de segurança. Essa abordagem otimiza a eficiência e a manutenção do sistema, garantindo que as políticas e controles de segurança sejam aplicados de maneira uniforme e consistente em toda a rede de contratos. Ao concentrar a gestão de segurança em uma estrutura compartilhada, reduzimos a complexidade operacional e promovemos uma implementação mais coesa e fácil de manter.
 
 
 ![Arquitetura de segurança:](/docs/security.png)
 
-**Módulo de Segurança de Hardware (HSM):**
+**Módulo de Segurança de Hardware (HSM)**
 
 
 
@@ -86,11 +104,11 @@ Um Módulo de Segurança de Hardware (HSM) é um dispositivo físico dedicado pr
 
 Amplamente empregados em setores que lidam com volumes substanciais de informações sensíveis, como bancos, finanças e saúde, os HSMs oferecem diversos benefícios:
 
-* **Segurança Aprimorada:** Proporcionam o mais elevado nível de segurança para dados e chaves criptográficas, sendo menos suscetíveis a ataques de malware ou vulnerabilidades do sistema operacional.
+* **Segurança Aprimorada** Proporcionam o mais elevado nível de segurança para dados e chaves criptográficas, sendo menos suscetíveis a ataques de malware ou vulnerabilidades do sistema operacional.
 
-* **Conformidade com Regulamentos:** Auxiliam organizações no cumprimento de regulamentos de segurança de dados, como PCI DSS e HIPAA.
+* **Conformidade com Regulamentos** Auxiliam organizações no cumprimento de regulamentos de segurança de dados, como PCI DSS e HIPAA.
 
-* **Redução do Risco de Violações de Dados:** Significativamente diminuem o risco de violações de dados e ataques cibernéticos.
+* **Redução do Risco de Violações de Dados** Significativamente diminuem o risco de violações de dados e ataques cibernéticos.
 
 * **Melhoria da Confiança do Cliente:** Reforçam a confiança do cliente ao demonstrar um compromisso robusto com a segurança de dados.
 

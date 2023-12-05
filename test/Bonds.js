@@ -39,7 +39,7 @@ describe("Bonds", function () {
         const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
         await authorizationControl.saveRole(create_bond_values_role, owner.address)
 
-        
+
 
         const AccessControl = await hre.ethers.getContractFactory('AccessControl')
         const accessControl = await AccessControl.deploy(await authorizationControl.getAddress())
