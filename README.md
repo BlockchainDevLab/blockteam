@@ -67,6 +67,13 @@ O acesso e a manipulação dos "papéis" ou funções estão restritos a um usu�
 
 Essa estrutura proporciona um nível robusto de controle e segurança, garantindo que apenas usuários devidamente autorizados possam influenciar as configurações e operações fundamentais relacionadas aos títulos, enquanto a conta MASTER, gerenciada por HSM, confere uma camada adicional de proteção à integridade do sistema.
 
+**Arquitetura de segurança:**
+
+A arquitetura de segurança é projetada de forma centralizada, compartilhada entre os diversos contratos inteligentes, eliminando a necessidade de atualizações em todos os contratos relacionados aos papéis de segurança. Essa abordagem otimiza a eficiência e a manutenção do sistema, garantindo que as políticas e controles de segurança sejam aplicados de maneira uniforme e consistente em toda a rede de contratos. Ao concentrar a gestão de segurança em uma estrutura compartilhada, reduzimos a complexidade operacional e promovemos uma implementação mais coesa e fácil de manter.
+
+
+![Arquitetura de segurança:](/docs/security.png)
+
 **Módulo de Segurança de Hardware (HSM):**
 
 ![Integração com HSM](/docs/HSM-ESQUEMA.png)
