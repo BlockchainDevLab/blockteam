@@ -23,6 +23,24 @@ describe("Bonds", function () {
         await authorizationControl.waitForDeployment()
 
 
+        //
+        const stn_group = ethers.encodeBytes32String("stn_group")
+
+        const create_type_role = ethers.encodeBytes32String("create_type_role")
+        await authorizationControl.saveRoleGroup(stn_group, create_type_role, owner.address)
+
+        const issue_role = ethers.encodeBytes32String("issue_role")
+        await authorizationControl.saveRoleGroup(stn_group, issue_role, owner.address)
+
+
+        const create_bond_role = ethers.encodeBytes32String("create_bond_role")
+        await authorizationControl.saveRoleGroup(stn_group, create_bond_role, owner.address)
+
+        const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
+        await authorizationControl.saveRole(create_bond_values_role, owner.address)
+
+        //
+
 
         //console.log(await authorizationControl.getAddress())
 
@@ -83,23 +101,6 @@ describe("Bonds", function () {
 
 
 
-            //ADD SECURITY 
-            //Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl
-
-            const stn_group = ethers.encodeBytes32String("stn_group")
-
-            const create_type_role = ethers.encodeBytes32String("create_type_role")
-            await authorizationControl.saveRoleGroup(stn_group, create_type_role, owner.address)
-
-            const issue_role = ethers.encodeBytes32String("issue_role")
-            await authorizationControl.saveRoleGroup(stn_group, issue_role, owner.address)
-
-            const create_bond_role = ethers.encodeBytes32String("create_bond_role")  //create_bond_role
-            await authorizationControl.saveRoleGroup(stn_group, create_bond_role, owner.address)
-
-            const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
-            await authorizationControl.saveRole(create_bond_values_role, owner.address)
-
             await bondStorage.addBondsType(1,
                 "BTN",
                 "Bônus do Tesouro Nacional",
@@ -131,7 +132,7 @@ describe("Bonds", function () {
             }
 
 
-
+            await bondStorage.createTreasuryBonds(transaction);
 
             await bondInstance.issue(addr1.address, transaction)
             //const jsonURI = await bondInstance.getBondsDataJSON(100)
@@ -144,23 +145,6 @@ describe("Bonds", function () {
                 Bonds, bondInstance, bondStorage, owner, addr1, addr2, authorizationControl
             } = await loadFixture(deployBonds)
 
-
-            const stn_group = ethers.encodeBytes32String("stn_group")
-
-            const create_type_role = ethers.encodeBytes32String("create_type_role")
-            await authorizationControl.saveRoleGroup(stn_group, create_type_role, owner.address)
-
-            const issue_role = ethers.encodeBytes32String("issue_role")
-            await authorizationControl.saveRoleGroup(stn_group, issue_role, owner.address)
-
-
-            const create_bond_role = ethers.encodeBytes32String("create_bond_role")  //create_bond_role
-            await authorizationControl.saveRoleGroup(stn_group, create_bond_role, owner.address)
-
-            const create_bond_values_role = ethers.encodeBytes32String("create_bond_values_role")
-            await authorizationControl.saveRole(create_bond_values_role, owner.address)
-
-
             await bondStorage.addBondsType(100,
                 "BTN",
                 "Bônus do Tesouro Nacional",
@@ -169,12 +153,6 @@ describe("Bonds", function () {
 
             const stnRole = ethers.encodeBytes32String("STN_ROLE")
             const b3Role = ethers.encodeBytes32String("B_ROLE")
-
-            //console.log(stnRole)
-
-            //await authorizationControl.saveRole(stnRole, owner.address);
-            //await authorizationControl.saveRole(b3Role, owner.address);
-
 
             //Entendendo o ISSB (International Sustainability Standards Board)
 
@@ -217,6 +195,8 @@ describe("Bonds", function () {
                 'MaturityDate': 1765211486
             }
 
+            
+            await bondStorage.createTreasuryBonds(transaction);
             await bondInstance.issue(addr1.address, transaction)
 
             const defaultValue = {

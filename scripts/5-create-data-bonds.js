@@ -3,8 +3,8 @@ const { ethers } = require("ethers");
 
 async function main() {
 
-    const ADR_BONDS_STORAGE = "0xE2A575D903bbaF6802FC975CCEacCb320eB0AF02"
-    const ADR_NFT_RENDER = "0xE2A575D903bbaF6802FC975CCEacCb320eB0AF02"
+    const ADR_BONDS_STORAGE = "0x07a39CAb8C5B1A72Fe00573f5b1e57C4dCeD86Ea"
+    const ADR_NFT_RENDER = "0xb9e4a6C619da0f501E08A0017Ac11a8764Dd9156"
     
     const BondsStorage = await hre.ethers.getContractFactory("BondsStorage", {
         libraries: {
@@ -43,7 +43,7 @@ async function main() {
     ]
 
     await bondStorage.createTreasuryBondsValues(
-        202201100,
+        202201101,
         metadataIds,
         bondsValues
     )

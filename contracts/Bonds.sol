@@ -6,7 +6,7 @@ import "./AccessControlRoleGroup.sol";
 //, AccessControlProxy
 import "./BondsStorage.sol";
 
-contract Bonds is NftTemplate, AccessControlRoleGroup , AccessControlProxy {
+contract Bonds is NftTemplate, AccessControlRoleGroup, AccessControlProxy {
     BondsStorage bondsStorage;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -24,23 +24,26 @@ contract Bonds is NftTemplate, AccessControlRoleGroup , AccessControlProxy {
         bondsStorage = BondsStorage(bondsStorageAddress);
     }
 
-    function issue(address to, Transaction calldata transaction) external 
-       onlyRoleGroup(
-        AccessControlRoleGroup.STN_GROUP,
-        AccessControlRoleGroup.ISSUE_ROLE
-    ) {
+    function issue(
+        address to,
+        Transaction calldata transaction
+    )
+        external
+        onlyRoleGroup(
+            AccessControlRoleGroup.STN_GROUP,
+            AccessControlRoleGroup.ISSUE_ROLE
+        )
+    {
         if (!bondsStorage.existsBondType(transaction.TypeID)) {
             revert BondsStorage.BondsTypeNotExist(transaction.TypeID);
         }
 
-        //int256 maxSupply= 
+        //int256 maxSupply=
         /*typeBond[uint256, string  , string  , uint256]  =  bondsStorage.getBondsType(transaction.TypeID);
         if (typeBond[3] != transaction.MaxSupply) {
             revert BondsStorage.TreasuryBondsMaxSupply(transaction.Id);
         }*/
 
-
-        bondsStorage.createTreasuryBonds(transaction);
         _mint(to, transaction.Id, transaction.Amount, "");
     }
 

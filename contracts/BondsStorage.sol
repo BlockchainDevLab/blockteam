@@ -169,18 +169,18 @@ contract BondsStorage is AccessControlRoleGroup, AccessControlProxy {
         }
 
         TreasuryBonds storage treasuryBonds = mapBonds[bondID];
-        TypeBonds storage typeBonds = mapBondTypes[treasuryBonds.TypeID];
-
         //verify roles
         bytes32 role;
-        bool hasAcess;
+        bool hasAcess =true;
+        accessControl.verifyRole(role, msg.sender);
+
         for (uint256 i; i < metadataIds.length; i++) {
             role = getBondsTypeMetadataRoleAcess(
                 treasuryBonds.TypeID,
                 metadataIds[i]
             );
-            hasAcess = accessControl.verifyRole(role, msg.sender);
-            //
+            accessControl.verifyRole(role, msg.sender);
+            //hasAcess = accessControl.verifyRole(role, msg.sender);
             if (!hasAcess) {
                 revert ROLES_RequireRole(role);
             }

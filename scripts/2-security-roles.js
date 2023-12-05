@@ -7,7 +7,7 @@ const { OWNER } = process.env
 
 async function main() {
 
-    const AUTH_CONTROL = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    const AUTH_CONTROL = "0xB6eeE3c8Ae3953783Db59CC67506aceA69BCE549"
 
     const AuthorizationControl = await hre.ethers.getContractFactory("AuthorizationControl")
 

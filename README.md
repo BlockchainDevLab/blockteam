@@ -33,6 +33,27 @@ Os contratos resultantes da simulação podem ser perfeitamente integrados aos s
 
        npx hardhat run scripts/5-create-data-bonds.js --network mumbai
 
+
+## Deploy do contrato
+
+O processo de deploy foi concluído com sucesso na testnet de Mumbai, tokenizando um título por meio de uma NFT ERC-1155.Permite testes extensivos em um ambiente controlado antes do deploy na rede principal(mainet).
+
+Os próximos passos incluem testes mais abrangentes, feedback contínuo e a preparação para o deploy na rede principal.
+
+**NFT ERC-1155**
+
+O título foi tokenizado utilizando o padrão ERC-1155, uma norma de token não fungível que oferece maior flexibilidade ao suportar vários tokens em uma única contraparte. A decisão de utilizar o padrão ERC-1155 para representar títulos revela-se estratégica devido às suas características distintivas. Este padrão permite a fracionação eficiente dos ativos, simplificando a gestão ao consolidar diferentes tipos de títulos em um único smart contract. Além de reduzir custos e complexidades, o ERC-1155 é amplamente reconhecido na indústria, proporcionando interoperabilidade e facilitando a implementação de lógicas de negócios personalizadas. Essa escolha promove um ecossistema mais dinâmico, acessível e adaptável para os participantes.
+
+
+![Contrato](/docs/image-titulo.svg)
+
+(NFT OPEN SEA)[https://testnets.opensea.io/assets/mumbai/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d/202201101]
+
+
+(Registro do contrato)[https://mumbai.polygonscan.com/address/0x47d9b72714323340f594e8a6f8bb3c1bf0a4259d]
+
+
+
 # ARQUITETURA DOS CONTRATOS
 
 **Segurança e Interoperabilidade:**
@@ -48,6 +69,7 @@ Essa estrutura proporciona um nível robusto de controle e segurança, garantind
 **Módulo de Segurança de Hardware (HSM):**
 
 ![Integração com HSM](/docs/HSM-ESQUEMA.png)
+
 
 Um Módulo de Segurança de Hardware (HSM) é um dispositivo físico dedicado projetado para proteger e gerenciar chaves criptográficas, além de realizar operações criptográficas. Com características de alta resistência a adulterações e desempenho robusto, os HSMs são ideais para salvaguardar dados sensíveis e facilitar transações digitais.
 
