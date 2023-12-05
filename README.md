@@ -8,31 +8,30 @@ Nessa simulação, scripts programáticos podem ser utilizados para criar e gere
 
 Os scripts permitem a definição precisa de parâmetros para a criação de títulos. Essa flexibilidade facilita a adaptação do processo de emissão conforme as necessidades específicas, garantindo uma representação próxima  do cenário operacional.
 
-
 ## Integração aos Sistemas de Informação e Controle
 
 Os contratos resultantes da simulação podem ser perfeitamente integrados aos sistemas de informação e controle existentes. Essa integração permite que os dados e eventos relacionados aos títulos sejam automaticamente registrados e rastreados.
 
-## 1 - DEPLOY DO CONTRATO 
+## 1 - DEPLOY DO CONTRATO
 
       npx hardhat run scripts/1-deploy.js --network mumbai
 **OBS: colocar as configurações no arquivo .env - veja o exemplo env.example**
 
 ## 2 - CRIAR OS TIPOS DE TITULOS
 
-       npx hardhat run scripts/2-create-types.js --network mumbai
+       npx hardhat run scripts/2-security-roles.js --network mumbai
 
+## 3 - CRIAR OS TIPOS DE TITULOS
 
-## 3 - CRIAR O DADOS DO TITULO NO STORAGE
+       npx hardhat run scripts/3-create-types.js --network mumbai
 
-       npx hardhat run scripts/3-create-bonds.js --network mumbai
-
-
-## 4 - EMITIR O TITULO PARA A CONTA SOB A CUSTODIA DA SELIC 
+## 4 - EMITIR O TITULO PARA A CONTA SOB A CUSTODIA DA SELIC
 
         npx hardhat run scripts/4-issue-bond.js --network mumbai  
 
+## 5 - CRIAR OS DADOS DO TITULO NO STORAGE
 
+       npx hardhat run scripts/5-create-data-bonds.js --network mumbai
 
 # ARQUITETURA DOS CONTRATOS
 
@@ -45,7 +44,6 @@ A arquitetura de segurança implementada visa promover a interoperabilidade ao f
 O acesso e a manipulação dos "papéis" ou funções estão restritos a um usuário MASTER exclusivo. Somente este usuário MASTER tem o privilégio de adicionar contas com acesso a essas funções específicas. Vale ressaltar que a conta MASTER é configurada como uma conta mult - signer, com a flexibilidade de ser gerenciada por um dispositivo de Segurança de Módulo de Hardware (HSM, na sigla em inglês).
 
 Essa estrutura proporciona um nível robusto de controle e segurança, garantindo que apenas usuários devidamente autorizados possam influenciar as configurações e operações fundamentais relacionadas aos títulos, enquanto a conta MASTER, gerenciada por HSM, confere uma camada adicional de proteção à integridade do sistema.
-
 
 **Módulo de Segurança de Hardware (HSM):**
 
