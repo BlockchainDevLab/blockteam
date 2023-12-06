@@ -14,8 +14,7 @@ Gestão - A STN e o CFSS têm total controle sobre a emissão de ativos e regist
 
 Transparência - Melhores condições de price discovery e monitoramento de dados das beneficiárias, graças à unificação dos dados em um único ativo
 
-
-
+[SLIDES PICTCH DECK: Títulos Soberanos Sustentáveis](/docs/Hackathon%20TN%20Pitch%20Deck.pdf)
 
 ## Integração aos Sistemas de Informação e Controle
 
