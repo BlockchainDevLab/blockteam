@@ -16,6 +16,17 @@ Transparência - Melhores condições de price discovery e monitoramento de dado
 
 [PITCH DECK: Títulos Soberanos Sustentáveis](/docs/Hackathon%20TN%20Pitch%20Deck.pdf)
 
+
+## Equipe
+- Paula: https://www.linkedin.com/in/paula-palermo/
+- Marcelo Silva: https://www.linkedin.com/in/marcelo-silva-0581b9216/
+- Verber Souza: https://www.linkedin.com/in/verber-s-095a17145/
+- Renato Pergoretti: http://linkedin.com/in/renato-💭-pegoretti-65b49285
+- Ariel Leite: https://www.linkedin.com/in/ariel-leite/
+- Valter Lobo: https://www.linkedin.com/in/valterlobo
+- Marcelo Creimer: https://www.linkedin.com/in/marcelo-creimer/
+
+
 ## Integração aos Sistemas de Informação e Controle
 
 Os contratos resultantes da simulação podem ser perfeitamente integrados aos sistemas de informação e controle existentes. Essa integração permite que os dados e eventos relacionados aos títulos sejam automaticamente registrados e rastreados.
